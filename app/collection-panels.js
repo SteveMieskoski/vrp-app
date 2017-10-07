@@ -243,7 +243,7 @@ AFRAME.registerComponent('collection-panels', {
 	},
 
 	showSaveButton: function () {
-		if (this.user) {
+		//if (this.user) {
 			if (!document.querySelector('a-image#saveButton')) {
 				var saveBtn = document.createElement('a-image');
 				saveBtn.setAttribute('id', 'saveButton');
@@ -251,12 +251,12 @@ AFRAME.registerComponent('collection-panels', {
 				saveBtn.setAttribute('height', 0.5);
 				saveBtn.setAttribute('width', 0.5);
 				saveBtn.setAttribute('position', {x: 2.4, y: -2, z: -3.8});
-				saveBtn.setAttribute('src', 'assets/ui/ic_stars_black_48dp_2x.png');
+				saveBtn.setAttribute('src', 'assets/ui/save_fav.png');
 				//saveBtn.setAttribute('scale', {x: 2.0, y: 0.8, z: 0.8});
 				saveBtn.addEventListener('click', this.savePic.bind(this));
 				this.el.appendChild(saveBtn);
 			}
-		}
+		//}
 
 	},
 
