@@ -4,7 +4,7 @@ var http = require("http");
 var Grid = require("gridfs-stream");
 // Require filesystem module
 var fs = require("fs");
-var sharp = require('sharp');
+//var sharp = require('sharp');
 var _ = require('lodash');
 var User = require('../models/user');
 var BufferStream = require('./streamer');
@@ -66,54 +66,54 @@ function decode(dataURI) {
 	};
 }
 
-function saveInMongo(lat, lng, image, imageData) {
-	return new Promise((resolve, reject) => {
-		Grid.mongo = mongoose.mongo;
-		/*	var picturePath = "http://maps.googleapis.com/maps/api/streetview?size=600x300&location=" + coords + "%20CA&heading=151.78&pitch=-0.76&key=AIzaSyBh7H5H3lLRSftfGQAN7c8k18sFjYYB0Uw";*/
+// function saveInMongo(lat, lng, image, imageData) {
+// 	return new Promise((resolve, reject) => {
+// 		Grid.mongo = mongoose.mongo;
+// 		/*	var picturePath = "http://maps.googleapis.com/maps/api/streetview?size=600x300&location=" + coords + "%20CA&heading=151.78&pitch=-0.76&key=AIzaSyBh7H5H3lLRSftfGQAN7c8k18sFjYYB0Uw";*/
 
-		// Here we insert the code for gridfs
-		var gfs = Grid(db.db);
-		var fileName = lat +"_"+ lng + '.png';
+// 		// Here we insert the code for gridfs
+// 		var gfs = Grid(db.db);
+// 		var fileName = lat +"_"+ lng + '.png';
 
-		gfs.exist({filename: fileName}, function (err, found) {
-			if (err) {
-				reject(err);
-				//return handleError(err);
-			}
-			if (!found) {
+// 		gfs.exist({filename: fileName}, function (err, found) {
+// 			if (err) {
+// 				reject(err);
+// 				//return handleError(err);
+// 			}
+// 			if (!found) {
 
 
-				var transformer = sharp()
-					.resize(200, 200)
-					.on('info', function(info) {
-						console.log('Image height is ' + info.height);
-					});
+// 				var transformer = sharp()
+// 					.resize(200, 200)
+// 					.on('info', function(info) {
+// 						console.log('Image height is ' + info.height);
+// 					});
 
-				var writestream = gfs.createWriteStream({
-					filename: fileName,
-					imageType: imageData
-				});
+// 				var writestream = gfs.createWriteStream({
+// 					filename: fileName,
+// 					imageType: imageData
+// 				});
 
-				var thumbWritestream = gfs.createWriteStream({
-					filename: 'thumb' + "_"+ fileName,
-					imageType: imageData
-				});
-				new BufferStream(image).pipe(writestream);
+// 				var thumbWritestream = gfs.createWriteStream({
+// 					filename: 'thumb' + "_"+ fileName,
+// 					imageType: imageData
+// 				});
+// 				new BufferStream(image).pipe(writestream);
 
-				new BufferStream(image).pipe(transformer).pipe(thumbWritestream);
-				/*var request = http.get(image, function(response) {
-					response.pipe(writestream);
-				});*/
+// 				new BufferStream(image).pipe(transformer).pipe(thumbWritestream);
+// 				/*var request = http.get(image, function(response) {
+// 					response.pipe(writestream);
+// 				});*/
 
-				writestream.on('close', function (file) {
-					console.log(file);
-					console.log(fileName + " Written to db");
-					resolve({added: true, filename: fileName, file: file});
-				});
-			} else {
-				resolve({added: false, msg: lat + lng + " already exists "});
-			}
+// 				writestream.on('close', function (file) {
+// 					console.log(file);
+// 					console.log(fileName + " Written to db");
+// 					resolve({added: true, filename: fileName, file: file});
+// 				});
+// 			} else {
+// 				resolve({added: false, msg: lat + lng + " already exists "});
+// 			}
 
-		});
-	})
-}
+// 		});
+// 	})
+// }

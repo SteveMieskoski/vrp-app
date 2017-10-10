@@ -1,6 +1,7 @@
 var https = require("https");
+var geocodeAPI = "4f03af1a1ea4428891dd006b61a9b4be";
 
-module.exports.getCoordsAndAddress = function(search, callback) {
+originalVersion = function(search, callback) {
     try{
 	    var searchResult = search;
 	    var url =
@@ -12,31 +13,55 @@ module.exports.getCoordsAndAddress = function(search, callback) {
 			    body += data;
 		    });
 		    res.on("end", () => {
-			    body = JSON.parse(body);
-			    /*console.log(
-				  `City: ${body.results[0].formatted_address} -`,
-				  `Latitude: ${body.results[0].geometry.location.lat} -`,
-				  `Longitude: ${body.results[0].geometry.location.lng}` */
-
+				body = JSON.parse(body);
+				
 			    let lat = body.results[0].geometry.location.lat;
 			    let lng = body.results[0].geometry.location.lng;
 			    let location = body.results[0].formatted_address;
-			    console.log(location);
+				console.log('ov', {lat: lat, lng: lng, address: location})
 			    callback(null, {lat: lat, lng: lng, address: location});
-
-
 		    });
 	    });
     } catch (err){
         callback(err);
     }
-
 };
 
+newVersion = function(search, callback) {
+    try{
+	    var searchResult = search;
+	    var url = "https://api.opencagedata.com/geocode/v1/json?query=" + search + "&pretty=1&key=" + geocodeAPI;
+	    https.get(url, res => {
+		    res.setEncoding("utf8");
+		    let body = "";
+		    res.on("data", data => {
+				body += data;
+				
+		    });
+		    res.on("end", () => {
+				body = JSON.parse(body); 
+				
+				var sorted = body.results.sort(function(a,b) {
+					return a.formatted.length < b.formatted.length;
+				})
+								if(sorted.length == 0) {
+									callback("no results", null);
+								}
 
-// USE SOMETHING LIKE OPEN CAGE DATA TO GET ADDRESS FROM LAT & LNG
-/*
+			    let lat = sorted[0].geometry.lat;
+			    let lng = sorted[0].geometry.lng;
+			    let location = sorted[0].formatted;
+				console.log('nv', {lat: lat, lng: lng, address: location})
+			    callback(null, {lat: lat, lng: lng, address: location});
+		    });
+	    });
+    } catch (err){
+        callback(err);
+    }
+}
 
-module.exports.getAddressFromCoords = function(lat, lng, callback){
+module.exports.getCoordsAndAddress = function(search, callback) {
+	//originalVersion(search, callback);
+	newVersion(search, callback);
+};
 
-}*/

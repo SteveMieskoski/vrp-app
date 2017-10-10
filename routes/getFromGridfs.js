@@ -6,7 +6,7 @@ var Grid = require("gridfs-stream");
 // Require filesystem module
 var url = require('url');
 var fs = require("fs");
-var sharp = require('sharp');
+//var sharp = require('sharp');
 var _ = require('lodash');
 var User = require('../models/user');
 var BufferStream = require('./streamer');

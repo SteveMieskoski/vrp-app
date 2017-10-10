@@ -1,7 +1,7 @@
 var express = require('express');
 var path = require('path');
 var fs = require('fs');
-var sharp = require('sharp');
+//var sharp = require('sharp');
 const url = require('url');
 var router = express.Router();
 console.log("index js ran");

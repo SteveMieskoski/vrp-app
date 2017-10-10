@@ -35,10 +35,11 @@ AFRAME.registerComponent('search', {
 
 					if (details[i].item === "button") {
 						newEl.addEventListener('click', (event) => {
+							console.log('marco');
 							var input = document.querySelector('a-input');
 							var queryTerm = input.value;
 							//this.getPic();
-							this.runQueryBackEnd('eiffel tower');
+							this.runQueryBackEnd(queryTerm);
 							if (queryTerm) {
 								if (queryTerm.length > 0) {
 									//	this.runQuery(queryTerm);
@@ -197,18 +198,6 @@ AFRAME.registerComponent('search', {
 						console.log('not logged in');
 					}
 				}
-
-
-				/*var placeName = response.data[1].address.replace(/\s*!/, "+");
-				//this.runQuery(encodeURI(placeName));
-				var getImage = baseUrl + '/save/photo/' + response.data[1].coords + '/' + response.data[1].address;
-				axios.get(getImage)
-					.then((response) => {
-						console.log(response);
-					})
-					.catch(err => {
-						console.log(err);
-					})*/
 			});
 
 	},
@@ -274,7 +263,7 @@ AFRAME.registerComponent('search', {
 
 		var lat = queryLat || 32.472170; //41.5044381; //39.9495073;//41.5044381; //32.472170;
 		var lng = queryLng || 34.996909;//-81.6068944; //-75.1506225;//-81.6068944; //34.996909;
-		var loader = new GSVPANO.PanoLoader({zoom: zoom});
+		var loader = new GSVPANO.PanoLoader({zoom: zoom, radius: 5});
 		//var loader = GSVPANO.PanoLoader({zoom: zoom});
 
 		loader.onPanoramaLoad = (data) => {
