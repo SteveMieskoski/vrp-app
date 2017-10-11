@@ -1,61 +1,18 @@
-var express = require('express');
-var path = require('path');
-var fs = require('fs');
-//var sharp = require('sharp');
-const url = require('url');
-var router = express.Router();
-console.log("index js ran");
 
-var pathHelper = require('../pathHelper');
-var mockData = require('../assets/dataMock');
+module.exports = pageDetails;
 
-/*
-
-function ensureAuthenticated(req, res, next) {
-	if(req.isAuthenticated()){
-		console.log("authenticated");
-		return next();
-	} else {
-		req.flash('error_msg','You are not logged in');
-		console.log("login coming!!!!!!!!!!!!!!!!!!!");
-		res.redirect("/login");
-	}
-}
-
-// Get Homepage
-router.get('/', ensureAuthenticated, function (req, res) {
-	console.log("dasjlfkasdj;flka");
-	console.log(req.body);
-	res.redirect('/login');
-});
-*/
-
-var options = {
-	root: path.join(pathHelper._root + "/public/"),
-	dotfiles: 'deny',
-	headers: {
-		'x-timestamp': Date.now(),
-		'x-sent': true
-	}
-};
-
-router.get('/', (req, res) => {
-	res.sendFile("login.html", options)
-});
-
-router.get('/compDetails/:comp', (req, res) => {
+function pageDetails(page, user) {
 	var content;
-	var basePath = "assets/ui/";
-	switch (req.params.comp) {
+	switch (page) {
 		case 'nav':
-			content = {user: req.user,
+			content = {
 				exclude: ['page'], details: [
 					{
 						id: "explore",
 						"data-page": "explore",
 						element: "a-image",
 						side: 'front',
-						src: basePath + "explore.png",
+						src: "assets/ui/explore.png",
 						class: "clickable",
 						width: 0.5,
 						height: 0.5,
@@ -124,20 +81,11 @@ router.get('/compDetails/:comp', (req, res) => {
 						color: 'teal',
 
 					}
-					/*
-								selected.setAttribute('radius-inner', width/2);
-				selected.setAttribute('radius-outer', (width + 0.1)/2);
-				selected.setAttribute('color', 'teal');
-				//selected.setAttribute('data-current', btns[i].comp);
-				selected.setAttribute('id', 'selectedHighlighter');
-				selected.setAttribute("position", position);
-					 */
 				]
 			};
 			break;
 		case 'explore':
 			content = {
-				user: req.user,
 				exclude: ['cat'], details: [
 					{
 						"data-cat": "art",
@@ -203,23 +151,22 @@ router.get('/compDetails/:comp', (req, res) => {
 		case 'help':
 			// z-axis is being controlled via the root element (see nav.js)
 			content = {
-				user: req.user,
 				exclude: [],
 				details: [
 					{
 						element: "a-image",
 						side: 'front',
-						src: basePath + "HelpMenu_ver1.png",
+						src: "https://raw.githubusercontent.com/SteveMieskoski/vrp-app_assets/master/icons/HelpMenu.png",
 						class: "clickable",
 						width: 10,
 						height: 2,
 						position: {x: -0.2, y: -0.5, z: 0}
 					},
-					{
+/*					{
 						id: "userLogout",
 						element: "a-image",
 						side: 'front',
-						src: basePath + "login_signup_Btn.png",
+						src: "assets/ui/login_signup_Btn.png",
 						class: "clickable",
 						position: {x: 0, y: -2.2, z: 0}
 					},
@@ -233,11 +180,10 @@ router.get('/compDetails/:comp', (req, res) => {
 						id: "hideMenus",
 						element: "a-image",
 						side: 'front',
-						src: basePath + "ic_visibility_off_black_48dp_2x.png",
+						src: "assets/ui/ic_visibility_off_black_48dp_2x.png",
 						class: "clickable",
-						//scale: {x: 1.5, y: 1.5, z: 1.5},
 						position: {x: 3.5, y: -2.2, z: 0}
-					}]
+					}*/]
 			};
 			break;
 		case 'search':
@@ -269,16 +215,8 @@ router.get('/compDetails/:comp', (req, res) => {
 						color: "white",
 						position: {x: 0.337, y: -1.075, z: -2.944},
 						scale: {x: 0.8, y: 0.8, z: 0.8}
-					},
-					/*{
-						item: "mapBtn",
-						element: 'a-button',
-						class: 'clickable',
-						value: 'show map',
-						color: 'white',
-						position: {x: 0.337, y: 0.075, z: -2.944},
-						scale: {x: 2.0, y: 0.5, z: 0.8}
-					}*/]
+					}
+				]
 			};
 			break;
 		case 'login':
@@ -411,11 +349,11 @@ router.get('/compDetails/:comp', (req, res) => {
 			break;
 	}
 
-	content.user = req.user;
-	res.json(content);
-});
+	content.user = user;
+	return content;
+}
 
 
-module.exports = router;
+
 
 

@@ -7,7 +7,8 @@ if(process.env.MONGODB_URI){
 	console.log(process.env.MONGODB_URI);
 	mongoose.connect(process.env.MONGODB_URI);
 } else {
-	mongoose.connect("mongodb://localhost/vrp-app");
+	mongoose.connect("mongodb://heroku_zqpqzz45:p8dcvcn472bd17fstb90v1u3ei@ds111535.mlab.com:11535/heroku_zqpqzz45");
+	//mongoose.connect("mongodb://localhost/vrp-app");
 }
 
 var db = mongoose.connection;

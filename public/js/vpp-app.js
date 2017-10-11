@@ -54,12 +54,6 @@
 	(()=>{
 		if (!AFRAME) { return console.error('AFRAME is required!'); }
 		if (!AFRAME.ASSETS_PATH) { AFRAME.ASSETS_PATH = "./assets"; }
-	/*	require('aframe');
-		require('aframe-mouse-cursor-component');
-		require('aframe-event-set-component');
-		require('aframe-animation-component');*/
-		//require('./simpleState');
-		__webpack_require__(2);
 		__webpack_require__(3);
 		__webpack_require__(4);
 		__webpack_require__(5);
@@ -76,59 +70,10 @@
 	
 		__webpack_require__(44);
 		__webpack_require__(45);
-		//require('../lib/annyang');
 	})();
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-	
-	
-	
-	/*
-	<a-cursor id="cursor" cursor="fuse: false" scale="1.3 1.3 1.3"
-	              animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1.3 1.3 1.3; dur: 150"
-	              animation__fusing="property: fusing; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500"
-	              event-set__1="_event: mouseenter; color: #549ad5"
-	              event-set__2="_event: mouseleave; color: #ededed"
-	              raycaster="far: 20; objects: .clickable">
-	    </a-cursor>
-	 */
-	/*
-	
-	$(document).ready(function(){
-		let isMobile = AFRAME.utils.device.isMobile();
-		if(!isMobile) {
-			var cursor = document.createElement('a-cursor');
-			cursor.setAttribute('id', 'cursor');
-			cursor.setAttribute('cursor', "fuse: true; fuseTimeout: 500");
-			cursor.setAttribute('scale', '1.3 1.3 1.3');
-			cursor.setAttribute('animation__click', "property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1.3 1.3 1.3; dur: 150");
-			cursor.setAttribute('animation__fusing', "property: fusing; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500");
-			cursor.setAttribute('animation__fusingColor', "property: color; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500");
-			cursor.setAttribute('event-set__1', "_event: mouseenter; color: #549ad5");
-			cursor.setAttribute('event-set__2', "_event: mouseleave; color: #ededed");
-			cursor.setAttribute('raycaster', "far: 20; objects: .clickable");
-			var camera = document.querySelector('a-entity#camera');
-			camera.appendChild(cursor);
-		} else {
-			/!*var cursor = document.createElement('a-cursor');
-			cursor.setAttribute('id', 'cursor');
-			cursor.setAttribute('cursor', "fuse: false");
-			cursor.setAttribute('scale', '1.3 1.3 1.3');
-			cursor.setAttribute('animation__click', "property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1.3 1.3 1.3; dur: 150");
-			cursor.setAttribute('animation__fusing', "property: fusing; startEvents: fusing; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500");
-			cursor.setAttribute('event-set__1', "_event: mouseenter; color: #549ad5");
-			cursor.setAttribute('event-set__2', "_event: mouseleave; color: #ededed");
-			cursor.setAttribute('raycaster', "far: 20; objects: .clickable");
-			var camera = document.querySelector('a-entity#camera');
-			camera.appendChild(cursor);*!/
-		}
-	});*/
-
-
-/***/ }),
+/* 2 */,
 /* 3 */
 /***/ (function(module, exports) {
 
@@ -166,8 +111,6 @@
 				}
 	
 			}
-			//console.log('readystatechange', event);
-			//console.log('document.readyState', document.readyState);
 		},
 	
 		emitOnHashChange: function(event){
@@ -195,146 +138,6 @@
 				return hash; // actually should return 404 but... for later
 			}
 		}
-	
-	/*	navigate: function (page) {
-			var priorContent = document.querySelector('a-entity#content-root');
-			if (priorContent) {
-				priorContent.parentNode.removeChild(priorContent);
-			} else {
-				//page = 'explore';
-			}
-			var root, keyboard;
-			switch (page) {
-				case 'explore':
-					this.buildExplorePage();
-					break;
-				case 'profile':
-					var showSignup, loggedIn;
-					var profileIcon = document.querySelector('a-image[data-page=profile]');
-					if(profileIcon){
-						showSignup = profileIcon.is('showSignup');
-						loggedIn = profileIcon.is('loggedIn');
-					}
-					if (loggedIn) {
-						this.buildExplorePage();
-					} else {
-						if (showSignup) {
-							document.querySelector('a-image[data-page=profile]').removeState('showSignup');
-							this.buildSignupPage();
-						} else {
-							this.buildLoginPage();
-						}
-					}
-					break;
-				case 'search':
-					this.buildSearchPage();
-					break;
-				case 'profile-expanded':
-					this.buildProfilePage();
-					break;
-				case 'help':
-					this.buildHelpMenu();
-					break;
-				default:
-					this.build404();
-					break;
-			}
-		},
-	
-		buildExplorePage: function () {
-			var root = this.buildBase();
-			var categories = document.createElement('a-entity');
-			categories.setAttribute('category-nav', 'initialCategory: mural;');
-			root.appendChild(categories);
-			var collection = document.createElement('a-entity');
-			collection.setAttribute('id', 'collection-root');
-			collection.setAttribute('collection-panels', {collection: 'mural', initial: true});
-			root.appendChild(collection);
-			this.el.appendChild(root);
-			root.setAttribute('visible', 'false');
-			setTimeout(() => {
-				root.setAttribute('visible', 'true');
-			}, 1000);
-		},
-	
-		buildSearchPage: function () {
-			var root = this.buildBase();
-			root.appendChild(this.buildKeyboard());
-			var search = document.createElement('a-entity');
-			search.setAttribute('search', 'nothing: nothing;');
-			root.appendChild(search);
-			this.el.sceneEl.appendChild(root);
-		},
-	
-		buildSignupPage: function () {
-			var root = this.buildBase();
-			root.appendChild(this.buildKeyboard());
-			var signup = document.createElement('a-entity');
-			signup.setAttribute('signup', 'nothing: nothing;');
-			root.appendChild(signup);
-			this.el.appendChild(root);
-		},
-	
-		buildLoginPage: function () {
-			var root = this.buildBase();
-			root.appendChild(this.buildKeyboard());
-			var signup = document.createElement('a-entity');
-			signup.setAttribute('login', 'nothing: nothing;');
-			root.appendChild(signup);
-			this.el.appendChild(root);
-		},
-	
-	
-		buildHelpMenu: function(){
-			var root = this.buildBase();
-			root.setAttribute('position', '0 1.5 -4');
-			var helpMenu = document.createElement('a-entity');
-			helpMenu.setAttribute('help-menu','nothing: nothing;');
-			root.appendChild(helpMenu);
-			this.el.appendChild(root);
-		},
-	
-		buildProfilePage: function(){
-			var root = this.buildBase();
-			var profile = document.createElement('a-entity');
-			profile.setAttribute('map-overlay', 'nothing: nothing;');
-			root.appendChild(profile);
-			this.el.appendChild(root);
-		},
-	
-		buildAddNote: function(){
-			var root = this.buildBase();
-		},
-	
-		buildBase: function(){
-			var root = document.createElement('a-entity');
-			root.setAttribute('id', 'content-root');
-			return root;
-		},
-	
-		buildKeyboard: function () {
-			var keyContainer = document.createElement('a-entity');
-			keyContainer.setAttribute('position', "0 -0.5 0");
-			var keyboard = document.createElement('a-keyboard');
-			keyboard.setAttribute('class', "clickable");
-			keyboard.setAttribute('physical-keyboard', "true");
-			keyboard.setAttribute('position', "-1.724 -5.751 -2.52");
-			keyboard.setAttribute('scale', "2.5 2.5 2.5");
-			keyboard.setAttribute('rotation', "-40 0 0");
-			keyContainer.appendChild(keyboard);
-			return keyContainer;
-		},
-	
-		build404: function(){
-			var root = document.createElement('a-entity');
-			root.setAttribute('id', 'content-root');
-			var noFound = document.createElement('a-text');
-			noFound.setAttribute('value', "404. Page Not Found :(");
-			noFound.setAttribute('position', {x: -1.176, y: -0.801, z: -2.944});
-			noFound.setAttribute('text', "height: 10");
-			root.appendChild(noFound);
-			this.el.appendChild(root);
-		}*/
 	});
 
 /***/ }),
@@ -530,8 +333,6 @@
 		},
 		mappings: {
 			'navController': 'router.navController'
-			/*'is-open': 'keyboard.isOpen',
-			'physical-keyboard': 'keyboard.physicalKeyboard',*/
 		}
 	});
 
@@ -19594,9 +19395,6 @@
 	
 			axios.get(window.location.origin + '/compDetails/explore')
 				.then((response) => {
-					if (_.has(response, 'user')) {
-						this.user = response.data.user;
-					}
 					console.log(response);
 					var details = response.data.details;
 					var exclude = response.data.exclude;
@@ -19609,7 +19407,6 @@
 								newEl.setAttribute(prop, details[i][prop])
 							}
 						}
-						// should tie this into the url to extract the present page
 						if (data.initialCategory === details[i]["data-cat"]) {
 							newEl.addEventListener('displayNewScene', function (event) {
 								console.log('displayNewScene set initial category');
@@ -19632,12 +19429,9 @@
 							if(setSelected){
 								setSelected.emit('displayNewScene');
 							}
-	
 						}
 					}
 					el.flushToDOM(true);
-	
-	
 				});
 			var skySphere = document.querySelector('a-sky');
 			skySphere.setAttribute('animation__fade', {
@@ -19663,18 +19457,19 @@
 			var highlighter = document.querySelector('a-ring#catHighlighter');
 			highlighter.setAttribute('position', position);
 			var collection = document.querySelector('a-entity#collection-root');
-			collection.setAttribute('collection-panels', {collection: categorySelected, initial: false})
+			collection.setAttribute('collection-panels', {collection: categorySelected, initial: false});
+			var vid = document.querySelector('a-videosphere');
+			if (vid) {
+				vid.isPlaying();
+				console.log('videoSphere', vid.isPlaying);
+	
+				vid.pause();
+				//vid.parentNode.removeChild(vid);
+			}
 		},
 	
 	});
-	
-	
-	/*
-	//
-	for(var thing in event.target.components.position){
-		console.log(thing);
-	}
-	 */
+
 
 /***/ }),
 /* 37 */
@@ -19684,13 +19479,10 @@
 	var axios = __webpack_require__(7);
 	var _ = __webpack_require__(34);
 	/**
-	 * Component that listens to an event, fades out an entity, swaps the texture, and fades it
-	 * back in.
+	 * Component that displays navigation elements for the explore page
 	 */
 	AFRAME.registerComponent('collection-panels', {
 		schema: {
-			/*on: {type: 'string'},
-			imgDir: {type: 'string'}*/
 			collection: {type: 'string', default: 'mural'},
 			initial: {type: 'boolean'}
 		},
@@ -19718,19 +19510,15 @@
 			}
 	
 		},
-	
-		// Paging should be taken care of on the back end;
 		tearDownDisplay: function () {
 			var current = document.querySelectorAll('a-image.row-pic');
 			console.log('tear down display prior content: ', current);
 			if (current) {
 				for (var i = 0; i < current.length; i++) {
-					var actual = current[i];
 					current[i].setAttribute('data-marked', 'removal');
 					current[i].addEventListener('animation__leave-complete', () => {
 						console.log('remove animation complete');
 					});
-					//console.log(current[i]);
 					current[i].emit("removal");
 				}
 			} else {
@@ -19742,7 +19530,6 @@
 			var current = document.querySelectorAll('a-image[data-marked=removal]');
 			if (current) {
 				for (var j = 0; j < current.length; j++) {
-					//	console.log(current[j]);
 					current[j].parentNode.removeChild(current[j]);
 				}
 			} else {
@@ -19756,9 +19543,7 @@
 			var rotation = "-10 0 0";
 			var classes = "clickable row-pic";
 	
-			var baseUrl = window.location.origin;
-			var queryUrl = baseUrl + '/geoSearch/Categories/' + data.collection;
-			axios.get(queryUrl)
+			axios.get(window.location.origin + '/geoSearch/Categories/' + data.collection)
 				.then(response => {
 					if (_.has(response, 'user')) {
 						this.user = response.data.user;
@@ -19775,7 +19560,6 @@
 					var root = document.querySelector('a-entity#content-root');
 					for (var i = 0; i < img.length; i++) {
 						var finalPosition;
-						//	console.log(i % 5);
 						switch (i % 5) {
 							case 0:
 								row++;
@@ -19817,17 +19601,8 @@
 								//sky.emit('set-image-fade');
 								var actual = $(this).attr('data-imageSrc');
 								this.emit('video-show', {uri: actual});
-	
-								/*						var actual = thumbSrc.replace("thumbnail_", "").replace(".png", ".jpg");
-													var splitted = thumbSrc.slice(10, thumbSrc.length);
-													var src = 'assets' + splitted;*/
 								console.log(actual);
 								sky.setAttribute('visible', 'false');
-								/*setTimeout(function () {
-									// Set image.
-									sky.setAttribute('material', 'src', actual);
-									//sky.setAttribute('src', src);
-								}, 200);*/
 	
 							});
 						} else {
@@ -19836,16 +19611,9 @@
 								this.emit('image-save', {shown: $(this).attr('src')});
 								sky.emit('set-image-fade');
 								var actual = $(this).attr('data-imageSrc');
-								/*						var actual = thumbSrc.replace("thumbnail_", "").replace(".png", ".jpg");
-														var splitted = thumbSrc.slice(10, thumbSrc.length);
-														var src = 'assets' + splitted;*/
 								console.log(actual);
-								//sky.setAttribute('material', 'src', actual);
 								setTimeout(function () {
-	
-									// Set image.
 									sky.setAttribute('material', 'src', actual);
-									//sky.setAttribute('src', src);
 								}.bind(this), 1500);
 	
 							});
@@ -19894,7 +19662,7 @@
 						if (!vid) {
 							vid = document.createElement('a-videosphere');
 						}
-						console.log(event);
+						console.log(vid.components);
 						vid.setAttribute('src', event.detail.uri);
 						vid.setAttribute('loop', 'false');
 						this.el.sceneEl.appendChild(vid);
@@ -20175,14 +19943,12 @@
 							newEl.addEventListener('click', (event) => {
 								console.log('submit click');
 								var userDetails = {};
-								/*var username = document.querySelector('a-input#username');
+								var username = document.querySelector('a-input#username');
 								var password = document.querySelector('a-input#password');
 								userDetails.username = username.value;
-								userDetails.password = password.value;*/
-								userDetails.username = "testuser";
-								userDetails.password = "Apassword1";
-								/*	userDetails.username = "tesfsdfstuser";
-									userDetails.password = "Apassdfsdfsdfsword1";*/
+								userDetails.password = password.value;
+	/*							userDetails.username = "testuser";
+								userDetails.password = "Apassword1";*/
 								this.userLogin(userDetails);
 							})
 						}
@@ -20509,7 +20275,7 @@
 				});
 	
 		},
-	
+		// ?
 		saveImage: function () {
 			var sky = document.querySelector('a-sky');
 			var lat = sky.getAttribute('data-lat');
@@ -21267,7 +21033,6 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* global AFRAME */
-	var axios = __webpack_require__(7);
 	var _ = __webpack_require__(34);
 	/**
 	 * Component that listens to an event, fades out an entity, swaps the texture, and fades it
@@ -21285,15 +21050,10 @@
 			var el = this.el;
 			var html = document.createElement('div');
 			html.setAttribute('id', 'embeddedMap');
-			//html.setAttribute('style', 'position: absolute; top: 0; right: 0; height: 200px; width: 200px;');
 			html.setAttribute('style', 'position: absolute;' +
 				'margin: 10px;'+
 				' top: 0; ' +
 				'right: 0; '
-				//'perspective: 500px;' +
-				//' perspective-origin: 150% 150%; ' +
-				//'transform-style: preserve-3d; ' +
-				//'transform: translateZ(50px);'
 			);
 			var map = document.createElement('div');
 			map.setAttribute('id', 'map');

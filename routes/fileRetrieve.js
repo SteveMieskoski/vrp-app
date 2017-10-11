@@ -17,7 +17,7 @@ module.exports.retrievePic = function (coords, address, callback) {
 
 		function (address) {
 			//  '../assets/saved/'
-			var picturePath = path.join(__dirname, process.env.DOWNLOAD_SAVE_PATH + coords + '.png');
+			var picturePath = path.join(__dirname,  '../assets/saved/' + coords + '.png');
 
 			Grid.mongo = mongoose.mongo;
 
@@ -47,7 +47,7 @@ module.exports.removePic = function (coords, path, callback) {
 	var gfs = Grid(db.db);
 	gfs.exist({filename: coords + '.png'}, function (err, found) {
 		if (err) {
-			res.send(err);
+			callback(err);
 		}
 		else {
 			gfs.remove({filename: coords + '.png'}, function (err) {

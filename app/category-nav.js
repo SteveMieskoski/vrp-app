@@ -15,9 +15,6 @@ AFRAME.registerComponent('category-nav', {
 
 		axios.get(window.location.origin + '/compDetails/explore')
 			.then((response) => {
-				if (_.has(response, 'user')) {
-					this.user = response.data.user;
-				}
 				console.log(response);
 				var details = response.data.details;
 				var exclude = response.data.exclude;
@@ -30,7 +27,6 @@ AFRAME.registerComponent('category-nav', {
 							newEl.setAttribute(prop, details[i][prop])
 						}
 					}
-					// should tie this into the url to extract the present page
 					if (data.initialCategory === details[i]["data-cat"]) {
 						newEl.addEventListener('displayNewScene', function (event) {
 							console.log('displayNewScene set initial category');
@@ -53,12 +49,9 @@ AFRAME.registerComponent('category-nav', {
 						if(setSelected){
 							setSelected.emit('displayNewScene');
 						}
-
 					}
 				}
 				el.flushToDOM(true);
-
-
 			});
 		var skySphere = document.querySelector('a-sky');
 		skySphere.setAttribute('animation__fade', {
@@ -84,15 +77,15 @@ AFRAME.registerComponent('category-nav', {
 		var highlighter = document.querySelector('a-ring#catHighlighter');
 		highlighter.setAttribute('position', position);
 		var collection = document.querySelector('a-entity#collection-root');
-		collection.setAttribute('collection-panels', {collection: categorySelected, initial: false})
+		collection.setAttribute('collection-panels', {collection: categorySelected, initial: false});
+		var vid = document.querySelector('a-videosphere');
+		if (vid) {
+			vid.isPlaying();
+			console.log('videoSphere', vid.isPlaying);
+
+			vid.pause();
+			//vid.parentNode.removeChild(vid);
+		}
 	},
 
 });
-
-
-/*
-//
-for(var thing in event.target.components.position){
-	console.log(thing);
-}
- */

@@ -35,14 +35,12 @@ AFRAME.registerComponent('login', {
 						newEl.addEventListener('click', (event) => {
 							console.log('submit click');
 							var userDetails = {};
-							/*var username = document.querySelector('a-input#username');
+							var username = document.querySelector('a-input#username');
 							var password = document.querySelector('a-input#password');
 							userDetails.username = username.value;
-							userDetails.password = password.value;*/
-							userDetails.username = "testuser";
-							userDetails.password = "Apassword1";
-							/*	userDetails.username = "tesfsdfstuser";
-								userDetails.password = "Apassdfsdfsdfsword1";*/
+							userDetails.password = password.value;
+/*							userDetails.username = "testuser";
+							userDetails.password = "Apassword1";*/
 							this.userLogin(userDetails);
 						})
 					}

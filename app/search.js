@@ -201,7 +201,7 @@ AFRAME.registerComponent('search', {
 			});
 
 	},
-
+	// ?
 	saveImage: function () {
 		var sky = document.querySelector('a-sky');
 		var lat = sky.getAttribute('data-lat');

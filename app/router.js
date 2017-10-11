@@ -187,7 +187,5 @@ AFRAME.registerPrimitive('a-router', {
 	},
 	mappings: {
 		'navController': 'router.navController'
-		/*'is-open': 'keyboard.isOpen',
-		'physical-keyboard': 'keyboard.physicalKeyboard',*/
 	}
 });

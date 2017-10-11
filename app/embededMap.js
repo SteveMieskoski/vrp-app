@@ -1,5 +1,4 @@
 /* global AFRAME */
-var axios = require("axios");
 var _ = require('lodash');
 /**
  * Component that listens to an event, fades out an entity, swaps the texture, and fades it
@@ -17,15 +16,10 @@ AFRAME.registerComponent('map-overlay', {
 		var el = this.el;
 		var html = document.createElement('div');
 		html.setAttribute('id', 'embeddedMap');
-		//html.setAttribute('style', 'position: absolute; top: 0; right: 0; height: 200px; width: 200px;');
 		html.setAttribute('style', 'position: absolute;' +
 			'margin: 10px;'+
 			' top: 0; ' +
 			'right: 0; '
-			//'perspective: 500px;' +
-			//' perspective-origin: 150% 150%; ' +
-			//'transform-style: preserve-3d; ' +
-			//'transform: translateZ(50px);'
 		);
 		var map = document.createElement('div');
 		map.setAttribute('id', 'map');

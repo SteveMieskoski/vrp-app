@@ -2,13 +2,10 @@
 var axios = require("axios");
 var _ = require('lodash');
 /**
- * Component that listens to an event, fades out an entity, swaps the texture, and fades it
- * back in.
+ * Component that displays navigation elements for the explore page
  */
 AFRAME.registerComponent('collection-panels', {
 	schema: {
-		/*on: {type: 'string'},
-		imgDir: {type: 'string'}*/
 		collection: {type: 'string', default: 'mural'},
 		initial: {type: 'boolean'}
 	},
@@ -36,19 +33,15 @@ AFRAME.registerComponent('collection-panels', {
 		}
 
 	},
-
-	// Paging should be taken care of on the back end;
 	tearDownDisplay: function () {
 		var current = document.querySelectorAll('a-image.row-pic');
 		console.log('tear down display prior content: ', current);
 		if (current) {
 			for (var i = 0; i < current.length; i++) {
-				var actual = current[i];
 				current[i].setAttribute('data-marked', 'removal');
 				current[i].addEventListener('animation__leave-complete', () => {
 					console.log('remove animation complete');
 				});
-				//console.log(current[i]);
 				current[i].emit("removal");
 			}
 		} else {
@@ -60,7 +53,6 @@ AFRAME.registerComponent('collection-panels', {
 		var current = document.querySelectorAll('a-image[data-marked=removal]');
 		if (current) {
 			for (var j = 0; j < current.length; j++) {
-				//	console.log(current[j]);
 				current[j].parentNode.removeChild(current[j]);
 			}
 		} else {
@@ -74,9 +66,7 @@ AFRAME.registerComponent('collection-panels', {
 		var rotation = "-10 0 0";
 		var classes = "clickable row-pic";
 
-		var baseUrl = window.location.origin;
-		var queryUrl = baseUrl + '/geoSearch/Categories/' + data.collection;
-		axios.get(queryUrl)
+		axios.get(window.location.origin + '/geoSearch/Categories/' + data.collection)
 			.then(response => {
 				if (_.has(response, 'user')) {
 					this.user = response.data.user;
@@ -93,7 +83,6 @@ AFRAME.registerComponent('collection-panels', {
 				var root = document.querySelector('a-entity#content-root');
 				for (var i = 0; i < img.length; i++) {
 					var finalPosition;
-					//	console.log(i % 5);
 					switch (i % 5) {
 						case 0:
 							row++;
@@ -135,17 +124,8 @@ AFRAME.registerComponent('collection-panels', {
 							//sky.emit('set-image-fade');
 							var actual = $(this).attr('data-imageSrc');
 							this.emit('video-show', {uri: actual});
-
-							/*						var actual = thumbSrc.replace("thumbnail_", "").replace(".png", ".jpg");
-												var splitted = thumbSrc.slice(10, thumbSrc.length);
-												var src = 'assets' + splitted;*/
 							console.log(actual);
 							sky.setAttribute('visible', 'false');
-							/*setTimeout(function () {
-								// Set image.
-								sky.setAttribute('material', 'src', actual);
-								//sky.setAttribute('src', src);
-							}, 200);*/
 
 						});
 					} else {
@@ -154,16 +134,9 @@ AFRAME.registerComponent('collection-panels', {
 							this.emit('image-save', {shown: $(this).attr('src')});
 							sky.emit('set-image-fade');
 							var actual = $(this).attr('data-imageSrc');
-							/*						var actual = thumbSrc.replace("thumbnail_", "").replace(".png", ".jpg");
-													var splitted = thumbSrc.slice(10, thumbSrc.length);
-													var src = 'assets' + splitted;*/
 							console.log(actual);
-							//sky.setAttribute('material', 'src', actual);
 							setTimeout(function () {
-
-								// Set image.
 								sky.setAttribute('material', 'src', actual);
-								//sky.setAttribute('src', src);
 							}.bind(this), 1500);
 
 						});
@@ -212,7 +185,7 @@ AFRAME.registerComponent('collection-panels', {
 					if (!vid) {
 						vid = document.createElement('a-videosphere');
 					}
-					console.log(event);
+					console.log(vid.components);
 					vid.setAttribute('src', event.detail.uri);
 					vid.setAttribute('loop', 'false');
 					this.el.sceneEl.appendChild(vid);

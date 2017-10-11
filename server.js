@@ -22,9 +22,7 @@ var exphbs = require('express-handlebars');
 var users = require("./routes/users");
 var routes = require("./routes/index");
 var content = require("./routes/content");
-var searches = require('./routes/searchRoutes');
-var curated = require('./routes/curated');
-var pageDetails = require('./routes/pageDetails');
+var searches = require('./routes/search');
 // Require History Schema
 var User = require("./models/user");
 // Sets an initial port. We'll use this later in our listener
@@ -108,10 +106,8 @@ console.log("server js ran");
 
 app.use('/', routes);  // temporary disable for dev
 app.use('/', searches);
-app.use('/', curated);
 app.use('/', users);
 app.use('/', content);
-app.use('/', pageDetails);
 
 // -------------------------------------------------
 // Listener
