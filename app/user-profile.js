@@ -26,7 +26,7 @@ AFRAME.registerComponent('user-profile', {
 
 				var usernameLabel = document.createElement('a-text');
 				usernameLabel.setAttribute("value", response.data.username);
-				usernameLabel.setAttribute("position", {x: -4, y: 0, z: -2});
+				usernameLabel.setAttribute("position", {x: -0.5, y: -1.3, z: -2});
 				usernameLabel.setAttribute('color', 'white');
 				usernameLabel.setAttribute('text', {height: 1});
 				//usernameLabel.setAttribute('scale', {x: 0.25, y: 0.25, z: 0.25});
@@ -93,7 +93,7 @@ AFRAME.registerComponent('user-profile', {
 			msgPlane.setAttribute('rotation', {x: -10, y: -30, z: 0});
 			messageContainer.appendChild(msgPlane);
 		}
-		document.querySelector('a-scene').appendChild(messageContainer);
+		document.querySelector('a-router').appendChild(messageContainer);
 	},
 
 	showSaved: function (userData) {
@@ -157,7 +157,7 @@ AFRAME.registerComponent('user-profile', {
 		var searchesLabel = document.createElement('a-text');
 		searchesLabel.setAttribute("value", "Your Saved Images");
 		searchesLabel.setAttribute('position', {x: -7, y: userData.saved.length, z: -4});
-		searchesLabel.setAttribute('rotation', {x: -10, y: 45, z: 0});
+		searchesLabel.setAttribute('rotation', {x: 0, y: 45, z: 0});
 		searchesLabel.setAttribute('color', 'white');
 		searchesLabel.setAttribute('text', {height: 1});
 		this.el.appendChild(searchesLabel);

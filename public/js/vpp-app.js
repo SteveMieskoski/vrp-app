@@ -54,27 +54,26 @@
 	(()=>{
 		if (!AFRAME) { return console.error('AFRAME is required!'); }
 		if (!AFRAME.ASSETS_PATH) { AFRAME.ASSETS_PATH = "./assets"; }
+		__webpack_require__(2);
 		__webpack_require__(3);
 		__webpack_require__(4);
 		__webpack_require__(5);
-		__webpack_require__(6);
+		__webpack_require__(35);
 		__webpack_require__(36);
 		__webpack_require__(37);
 		__webpack_require__(38);
 		__webpack_require__(39);
-		__webpack_require__(40);
+		__webpack_require__(41);
 		__webpack_require__(42);
+	
+	
+	
 		__webpack_require__(43);
-	
-	
-	
 		__webpack_require__(44);
-		__webpack_require__(45);
 	})();
 
 /***/ }),
-/* 2 */,
-/* 3 */
+/* 2 */
 /***/ (function(module, exports) {
 
 	AFRAME.registerSystem('router', {
@@ -83,7 +82,10 @@
 			routerEl: {type: 'selector', default: 'a-router'}
 		},
 		init: function () {
-			//console.log(simpleState);
+			if(window.location.hash === ""){
+				window.location.hash = 'explore';
+			}
+	
 			window.addEventListener("hashchange", this.emitOnHashChange.bind(this), false);
 			document.addEventListener('readystatechange', this.handleInitialLoad.bind(this));
 		},
@@ -95,32 +97,25 @@
 		updateSchema: function(data){},
 	
 		handleInitialLoad: function(event){
-			var router;
 			if(document.readyState === 'interactive'){
 				var url = event.target.URL;
-				//console.log(url);
 				if(/#/.test(url)){
 					var hash = url.match(/#.*/)[0].replace('#','');
-					//console.log(document.querySelector('a-entity#nav-attach'));
 					this.data.routerEl.emit('initialPage', {page: hash});
 					this.data.navController.emit('initialPage', {page: this.resolveSubPages(hash)});
-					//this.navigate(hash);
 				} else {
-					this.data.routerEl.emit('initialPage', {page: 'search'});
-					this.data.navController.emit('initialPage', {page: this.resolveSubPages('search')});
+	
+					this.data.routerEl.emit('initialPage', {page: 'explore'});
+					this.data.navController.emit('initialPage', {page: this.resolveSubPages('explore')});
 				}
 	
 			}
 		},
 	
 		emitOnHashChange: function(event){
-			//console.log('hash event', event);
-			//console.log('hash portion', event.newURL.match(/#.*/)[0].replace('#',''));
 			var hash = event.newURL.match(/#.*/)[0].replace('#','');
 			this.data.currentPage = hash;
 			this.data.routerEl.emit('navigate', {page: hash});
-			//this.data.navController.emit('navigate', {page: this.resolveSubPages('login')});
-			//this.navigate(hash);
 		},
 	
 		resolveSubPages: function(hash){
@@ -141,7 +136,7 @@
 	});
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports) {
 
 	AFRAME.registerComponent('router', {
@@ -337,7 +332,7 @@
 	});
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports) {
 
 	/* global AFRAME */
@@ -396,12 +391,12 @@
 	});
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* global AFRAME */
-	var axios = __webpack_require__(7);
-	var _ = __webpack_require__(34);
+	var axios = __webpack_require__(6);
+	var _ = __webpack_require__(33);
 	/**
 	 * Component that listens to an event, fades out an entity, swaps the texture, and fades it
 	 * back in.
@@ -550,21 +545,21 @@
 	});
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(8);
+	module.exports = __webpack_require__(7);
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
-	var bind = __webpack_require__(10);
-	var Axios = __webpack_require__(12);
-	var defaults = __webpack_require__(13);
+	var utils = __webpack_require__(8);
+	var bind = __webpack_require__(9);
+	var Axios = __webpack_require__(11);
+	var defaults = __webpack_require__(12);
 	
 	/**
 	 * Create an instance of Axios
@@ -597,15 +592,15 @@
 	};
 	
 	// Expose Cancel & CancelToken
-	axios.Cancel = __webpack_require__(31);
-	axios.CancelToken = __webpack_require__(32);
-	axios.isCancel = __webpack_require__(28);
+	axios.Cancel = __webpack_require__(30);
+	axios.CancelToken = __webpack_require__(31);
+	axios.isCancel = __webpack_require__(27);
 	
 	// Expose all/spread
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(33);
+	axios.spread = __webpack_require__(32);
 	
 	module.exports = axios;
 	
@@ -614,13 +609,13 @@
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var bind = __webpack_require__(10);
-	var isBuffer = __webpack_require__(11);
+	var bind = __webpack_require__(9);
+	var isBuffer = __webpack_require__(10);
 	
 	/*global toString:true*/
 	
@@ -923,7 +918,7 @@
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -940,7 +935,7 @@
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports) {
 
 	/*!
@@ -967,17 +962,17 @@
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var defaults = __webpack_require__(13);
-	var utils = __webpack_require__(9);
-	var InterceptorManager = __webpack_require__(25);
-	var dispatchRequest = __webpack_require__(26);
-	var isAbsoluteURL = __webpack_require__(29);
-	var combineURLs = __webpack_require__(30);
+	var defaults = __webpack_require__(12);
+	var utils = __webpack_require__(8);
+	var InterceptorManager = __webpack_require__(24);
+	var dispatchRequest = __webpack_require__(25);
+	var isAbsoluteURL = __webpack_require__(28);
+	var combineURLs = __webpack_require__(29);
 	
 	/**
 	 * Create a new instance of Axios
@@ -1059,13 +1054,13 @@
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 	
-	var utils = __webpack_require__(9);
-	var normalizeHeaderName = __webpack_require__(15);
+	var utils = __webpack_require__(8);
+	var normalizeHeaderName = __webpack_require__(14);
 	
 	var DEFAULT_CONTENT_TYPE = {
 	  'Content-Type': 'application/x-www-form-urlencoded'
@@ -1081,10 +1076,10 @@
 	  var adapter;
 	  if (typeof XMLHttpRequest !== 'undefined') {
 	    // For browsers use XHR adapter
-	    adapter = __webpack_require__(16);
+	    adapter = __webpack_require__(15);
 	  } else if (typeof process !== 'undefined') {
 	    // For node use HTTP adapter
-	    adapter = __webpack_require__(16);
+	    adapter = __webpack_require__(15);
 	  }
 	  return adapter;
 	}
@@ -1155,10 +1150,10 @@
 	
 	module.exports = defaults;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports) {
 
 	// shim for using process in browser
@@ -1348,12 +1343,12 @@
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
+	var utils = __webpack_require__(8);
 	
 	module.exports = function normalizeHeaderName(headers, normalizedName) {
 	  utils.forEach(headers, function processHeader(value, name) {
@@ -1366,18 +1361,18 @@
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
-	var settle = __webpack_require__(17);
-	var buildURL = __webpack_require__(20);
-	var parseHeaders = __webpack_require__(21);
-	var isURLSameOrigin = __webpack_require__(22);
-	var createError = __webpack_require__(18);
-	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(23);
+	var utils = __webpack_require__(8);
+	var settle = __webpack_require__(16);
+	var buildURL = __webpack_require__(19);
+	var parseHeaders = __webpack_require__(20);
+	var isURLSameOrigin = __webpack_require__(21);
+	var createError = __webpack_require__(17);
+	var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(22);
 	
 	module.exports = function xhrAdapter(config) {
 	  return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -1474,7 +1469,7 @@
 	    // This is only done if running in a standard browser environment.
 	    // Specifically not if we're in a web worker, or react-native.
 	    if (utils.isStandardBrowserEnv()) {
-	      var cookies = __webpack_require__(24);
+	      var cookies = __webpack_require__(23);
 	
 	      // Add xsrf header
 	      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -1552,12 +1547,12 @@
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var createError = __webpack_require__(18);
+	var createError = __webpack_require__(17);
 	
 	/**
 	 * Resolve or reject a Promise based on response status.
@@ -1584,12 +1579,12 @@
 
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var enhanceError = __webpack_require__(19);
+	var enhanceError = __webpack_require__(18);
 	
 	/**
 	 * Create an Error with the specified message, config, error code, request and response.
@@ -1608,7 +1603,7 @@
 
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -1635,12 +1630,12 @@
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
+	var utils = __webpack_require__(8);
 	
 	function encode(val) {
 	  return encodeURIComponent(val).
@@ -1709,12 +1704,12 @@
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
+	var utils = __webpack_require__(8);
 	
 	/**
 	 * Parse headers into an object
@@ -1752,12 +1747,12 @@
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
+	var utils = __webpack_require__(8);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -1826,7 +1821,7 @@
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -1868,12 +1863,12 @@
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
+	var utils = __webpack_require__(8);
 	
 	module.exports = (
 	  utils.isStandardBrowserEnv() ?
@@ -1927,12 +1922,12 @@
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
+	var utils = __webpack_require__(8);
 	
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -1985,15 +1980,15 @@
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
-	var transformData = __webpack_require__(27);
-	var isCancel = __webpack_require__(28);
-	var defaults = __webpack_require__(13);
+	var utils = __webpack_require__(8);
+	var transformData = __webpack_require__(26);
+	var isCancel = __webpack_require__(27);
+	var defaults = __webpack_require__(12);
 	
 	/**
 	 * Throws a `Cancel` if cancellation has been requested.
@@ -2070,12 +2065,12 @@
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var utils = __webpack_require__(9);
+	var utils = __webpack_require__(8);
 	
 	/**
 	 * Transform the data for a request or a response
@@ -2096,7 +2091,7 @@
 
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2107,7 +2102,7 @@
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2127,7 +2122,7 @@
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2147,7 +2142,7 @@
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2172,12 +2167,12 @@
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Cancel = __webpack_require__(31);
+	var Cancel = __webpack_require__(30);
 	
 	/**
 	 * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -2235,7 +2230,7 @@
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -2268,7 +2263,7 @@
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {/**
@@ -19356,10 +19351,10 @@
 	  }
 	}.call(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(35)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(34)(module)))
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports) {
 
 	module.exports = function(module) {
@@ -19375,12 +19370,12 @@
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* global AFRAME */
-	var axios = __webpack_require__(7);
-	var _ = __webpack_require__(34);
+	var axios = __webpack_require__(6);
+	var _ = __webpack_require__(33);
 	/**
 	 * Component that builds navigation row for explore categories
 	 */
@@ -19472,12 +19467,12 @@
 
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* global AFRAME */
-	var axios = __webpack_require__(7);
-	var _ = __webpack_require__(34);
+	var axios = __webpack_require__(6);
+	var _ = __webpack_require__(33);
 	/**
 	 * Component that displays navigation elements for the explore page
 	 */
@@ -19735,12 +19730,12 @@
 
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* global AFRAME */
-	var axios = __webpack_require__(7);
-	var _ = __webpack_require__(34);
+	var axios = __webpack_require__(6);
+	var _ = __webpack_require__(33);
 	/**
 	 * Component that listens to an event, fades out an entity, swaps the texture, and fades it
 	 * back in.
@@ -19903,12 +19898,12 @@
 	});
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* global AFRAME */
-	var axios = __webpack_require__(7);
-	var _ = __webpack_require__(34);
+	var axios = __webpack_require__(6);
+	var _ = __webpack_require__(33);
 	/**
 	 * Component that listens to an event, fades out an entity, swaps the texture, and fades it
 	 * back in.
@@ -20069,13 +20064,13 @@
 	});
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* global AFRAME */
-	var axios = __webpack_require__(7);
-	var GSVPANO = __webpack_require__(41);
-	var _ = __webpack_require__(34);
+	var axios = __webpack_require__(6);
+	var GSVPANO = __webpack_require__(40);
+	var _ = __webpack_require__(33);
 	/**
 	 * GOOGLE MAP WILL ONLY SHOW IF THE URL IS NOT A HASH URL.
 	 * A STREET VIEW IMAGE WILL ONLY BE FOUND IF THE COORDINATES USED LIE ON A STREET (OR AT LEAST VERY VERY CLOSE [I THINK])
@@ -20162,7 +20157,7 @@
 		keyboardOpen: function () {
 			this.el.emit("keyboardIsOpenMove");
 			let isMobile = AFRAME.utils.device.isMobile();
-			if(!isMobile){
+		/*	if(!isMobile){
 				var mapBtn = document.createElement('a-button');
 				mapBtn.setAttribute('id', 'mapButton');
 				mapBtn.setAttribute('class', 'clickable');
@@ -20177,7 +20172,7 @@
 				mapBtn.addEventListener('click', this.showMap.bind(this));
 				let root = document.querySelector('a-router');
 				root.appendChild(mapBtn);
-			}
+			}*/
 		},
 	
 		keyboardClosed: function () {
@@ -20189,7 +20184,7 @@
 	
 	
 		showMap: function (updateOnly) {
-			console.log('show map');
+		/*	console.log('show map');
 			var root, mapEl, mapBtn;
 			root = document.querySelector('a-entity#content-root');
 			mapEl = document.querySelector('a-entity#mapElement');
@@ -20202,7 +20197,7 @@
 				root.appendChild(mapEl);
 				mapBtn = document.querySelector('a-button#mapButton');
 				mapBtn.setAttribute('value', 'hide map');
-			}
+			}*/
 		},
 	
 		hideMap: function () {
@@ -20468,14 +20463,14 @@
 	});
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * @type {GSVPANO|*|{}}
 	 */
 	var GSVPANO = GSVPANO || {};
-	var axios = __webpack_require__(7);
+	var axios = __webpack_require__(6);
 	/**
 	 * Panoloader().
 	 * @param parameters
@@ -20691,12 +20686,12 @@
 	module.exports = GSVPANO;
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* global AFRAME */
-	var axios = __webpack_require__(7);
-	var _ = __webpack_require__(34);
+	var axios = __webpack_require__(6);
+	var _ = __webpack_require__(33);
 	/**
 	 * Component that listens to an event, fades out an entity, swaps the texture, and fades it
 	 * back in.
@@ -20791,12 +20786,12 @@
 	});
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* global AFRAME */
-	var axios = __webpack_require__(7);
-	var _ = __webpack_require__(34);
+	var axios = __webpack_require__(6);
+	var _ = __webpack_require__(33);
 	/**
 	 * Component that listens to an event, fades out an entity, swaps the texture, and fades it
 	 * back in.
@@ -20822,7 +20817,7 @@
 	
 					var usernameLabel = document.createElement('a-text');
 					usernameLabel.setAttribute("value", response.data.username);
-					usernameLabel.setAttribute("position", {x: -4, y: 0, z: -2});
+					usernameLabel.setAttribute("position", {x: -0.5, y: -1.3, z: -2});
 					usernameLabel.setAttribute('color', 'white');
 					usernameLabel.setAttribute('text', {height: 1});
 					//usernameLabel.setAttribute('scale', {x: 0.25, y: 0.25, z: 0.25});
@@ -20889,7 +20884,7 @@
 				msgPlane.setAttribute('rotation', {x: -10, y: -30, z: 0});
 				messageContainer.appendChild(msgPlane);
 			}
-			document.querySelector('a-scene').appendChild(messageContainer);
+			document.querySelector('a-router').appendChild(messageContainer);
 		},
 	
 		showSaved: function (userData) {
@@ -20953,7 +20948,7 @@
 			var searchesLabel = document.createElement('a-text');
 			searchesLabel.setAttribute("value", "Your Saved Images");
 			searchesLabel.setAttribute('position', {x: -7, y: userData.saved.length, z: -4});
-			searchesLabel.setAttribute('rotation', {x: -10, y: 45, z: 0});
+			searchesLabel.setAttribute('rotation', {x: 0, y: 45, z: 0});
 			searchesLabel.setAttribute('color', 'white');
 			searchesLabel.setAttribute('text', {height: 1});
 			this.el.appendChild(searchesLabel);
@@ -21029,11 +21024,11 @@
 	});
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* global AFRAME */
-	var _ = __webpack_require__(34);
+	var _ = __webpack_require__(33);
 	/**
 	 * Component that listens to an event, fades out an entity, swaps the texture, and fades it
 	 * back in.
@@ -21138,7 +21133,7 @@
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports) {
 
 	/******/ (function(modules) { // webpackBootstrap

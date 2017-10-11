@@ -6,7 +6,7 @@ module.exports = function (category){
 		case 'mural':
 			return [
 				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/mural/thumbnail_mural_1.png", address: ""},
-				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/mural/thumbnail_mural_2.png", address: ""},
+			/*	{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/mural/thumbnail_mural_2.png", address: ""},*/
 				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/mural/thumbnail_mural_3.png", address: ""},
 				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/mural/thumbnail_mural_4.png", address: ""},
 				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/mural/thumbnail_mural_5.png", address: ""},

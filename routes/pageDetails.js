@@ -12,7 +12,7 @@ function pageDetails(page, user) {
 						"data-page": "explore",
 						element: "a-image",
 						side: 'front',
-						src: "assets/ui/explore.png",
+						src: "https://raw.githubusercontent.com/SteveMieskoski/vrp-app_assets/master/icons/thumb-explore.png",
 						class: "clickable",
 						width: 0.5,
 						height: 0.5,
