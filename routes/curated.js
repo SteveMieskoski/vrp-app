@@ -28,12 +28,7 @@ module.exports = function (category){
 				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/art/art_2.png", address: ""},
 				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/art/art_3.png", address: ""},
 				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/art/art_4.png", address: ""},
-/*				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/art/art_5.png", address: ""},
-				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/art/art_6.png", address: ""},
-				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/art/art_7.png", address: ""},
-				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/art/art_8.png", address: ""},*/
 				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/art/art_9.png", address: ""},
-				//{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/art/art_10.png", address: ""},
 			];
 			break;
 		case 'building':
@@ -46,7 +41,6 @@ module.exports = function (category){
 				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/building/thumbnail_building_6.png", address: ""},
 				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/building/thumbnail_building_7.png", address: ""},
 				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/building/thumbnail_building_8.png", address: ""},
-			/*	{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/building/thumbnail_building_9.png", address: ""},*/
 				{lat: 20, lng: 20, src:"https://cdn.rawgit.com/SteveMieskoski/vrp-app_assets/master/building/thumbnail_building_10.png", address: ""},
 			];
 			break;

@@ -88,7 +88,7 @@ AFRAME.registerComponent('search', {
 	keyboardOpen: function () {
 		this.el.emit("keyboardIsOpenMove");
 		let isMobile = AFRAME.utils.device.isMobile();
-		if(!isMobile){
+	/*	if(!isMobile){
 			var mapBtn = document.createElement('a-button');
 			mapBtn.setAttribute('id', 'mapButton');
 			mapBtn.setAttribute('class', 'clickable');
@@ -103,7 +103,7 @@ AFRAME.registerComponent('search', {
 			mapBtn.addEventListener('click', this.showMap.bind(this));
 			let root = document.querySelector('a-router');
 			root.appendChild(mapBtn);
-		}
+		}*/
 	},
 
 	keyboardClosed: function () {
@@ -115,7 +115,7 @@ AFRAME.registerComponent('search', {
 
 
 	showMap: function (updateOnly) {
-		console.log('show map');
+	/*	console.log('show map');
 		var root, mapEl, mapBtn;
 		root = document.querySelector('a-entity#content-root');
 		mapEl = document.querySelector('a-entity#mapElement');
@@ -128,7 +128,7 @@ AFRAME.registerComponent('search', {
 			root.appendChild(mapEl);
 			mapBtn = document.querySelector('a-button#mapButton');
 			mapBtn.setAttribute('value', 'hide map');
-		}
+		}*/
 	},
 
 	hideMap: function () {
