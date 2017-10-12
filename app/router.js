@@ -1,3 +1,6 @@
+var _ = require('lodash');
+
+
 AFRAME.registerComponent('router', {
 	schema: {
 		navController: {type: 'selector'}
@@ -20,28 +23,75 @@ AFRAME.registerComponent('router', {
 	updateSchema: function (data) {
 	},
 
+	cleanPriorScene: function (item) {
+		if (item.type === "Group") {
+			_.forEach(item.children, (thing) => {
+				this.cleanPriorScene(thing)
+			})
+		} else {
+			if (item.type === 'Audio') {
+				console.log('Audio: ', item);
+			/*	if(item) console.log('(if item) Audio: ', item);
+				if(item.disconnect) item.disconnect();*/
+			} else if (item.type === 'Mesh') {
+				console.log('Mesh Geometry: ', item.geometry);
+				console.log('Mesh Material: ', item.material);
+				console.log('Mesh Material Map: ', item.material.map);
+				item.geometry.dispose();
+				item.material.dispose();
+				if(item.material.map){
+					if(item.material.map.image){
+						if(/\.mp4$/.test(item.material.map.image.src)){
+							console.log('Mesh Material Map Video: ', item.material.map.image);
+							item.material.map.image.muted = true;
+							item.material.map.dispose();
+						} else {
+							item.material.map.dispose();
+						}
+						console.log('Mesh Material Map Image: ', item.material.map.image.src);
+					}
+
+				}
+				item.parent.remove(item);
+			} else {
+				console.log('Other Type: ', item);
+			}
+
+		}
+	},
 
 	navigate: function (event) {
 		var page = event.detail.page;
+
+		// iterate through a-router children to clean up geometry and material properties (to free up memory)
+		this.cleanPriorScene(this.el.object3D);
+
+		// check for and remove video sphere if present
+		var vid = document.querySelector('a-entity#videoScreen');
+		if (vid) {
+			this.cleanPriorScene(vid.object3D);
+			vid.parentNode.removeChild(vid);
+		}
+
+		// hack to remove show menu button if still present
+		var show = document.querySelector('a-entity#showAgain');
+		if(show){
+			show.parentNode.removeChild(show);
+		}
+		// remove any prior displayed content DOM nodes
 		var oldContent = this.el.children;
 		if (oldContent.length > 0) {
 			_.forEach(oldContent, (item) => {
-				if(item) item.parentNode.removeChild(item);
+				if (item) item.parentNode.removeChild(item);
 			})
 		}
 		var keybrd = document.querySelector('a-keyboard');
-		if(keybrd){
+		if (keybrd) {
 			console.log(keybrd);
 			keybrd.parentNode.removeChild(keybrd);
 		}
 		console.log('page on: ', page);
-		/*var priorContent = document.querySelector('a-entity#content-root');
-		if (priorContent) {
-			priorContent.parentNode.removeChild(priorContent);
-		} else {
-			//page = 'explore';
-		}*/
-		var root, keyboard;
+
 		switch (page) {
 			case 'explore':
 				this.buildExplorePage();
@@ -160,7 +210,7 @@ AFRAME.registerComponent('router', {
 		keyboard.setAttribute('position', "-1.724 -5.751 -2.52");
 		keyboard.setAttribute('scale', "2.5 2.5 2.5");
 		keyboard.setAttribute('rotation', "-40 0 0");
-		keyboard.addEventListener('input', (e)=>{
+		keyboard.addEventListener('input', (e) => {
 			str += e.detail;
 			console.log(str);
 		});

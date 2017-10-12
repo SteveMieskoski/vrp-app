@@ -80,11 +80,11 @@ AFRAME.registerComponent('category-nav', {
 		collection.setAttribute('collection-panels', {collection: categorySelected, initial: false});
 		var vid = document.querySelector('a-videosphere');
 		if (vid) {
-			vid.isPlaying();
-			console.log('videoSphere', vid.isPlaying);
+			if(!vid.paused){
+				console.log('videoSphere', vid.isPlaying);
 
-			vid.pause();
-			//vid.parentNode.removeChild(vid);
+				vid.pause();
+			}
 		}
 	},
 

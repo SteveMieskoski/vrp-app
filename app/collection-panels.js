@@ -1,6 +1,8 @@
 /* global AFRAME */
 var axios = require("axios");
 var _ = require('lodash');
+
+//var hideMenus = require('./hideMenus');
 /**
  * Component that displays navigation elements for the explore page
  */
@@ -11,6 +13,7 @@ AFRAME.registerComponent('collection-panels', {
 	},
 
 	init: function () {
+		this.video = null;
 		var data = this.data;
 		var el = this.el;
 		this.builPanels(data);
@@ -71,7 +74,7 @@ AFRAME.registerComponent('collection-panels', {
 				if (_.has(response, 'user')) {
 					this.user = response.data.user;
 				}
-				if(data.collection !== 'video'){
+				if (data.collection !== 'video') {
 					document.querySelector('a-sky').setAttribute('visible', 'true');
 					var vid = document.querySelector('a-videosphere');
 					if (vid) {
@@ -102,38 +105,37 @@ AFRAME.registerComponent('collection-panels', {
 							break;
 					}
 					var pic = document.createElement('a-image');
-					pic.setAttribute('side', 'front');
-					pic.setAttribute('class', classes);
-					if (/art_/.test(img[i].src)) {
-						pic.setAttribute('data-imageSrc', img[i].src.replace("thumbnail_", ""));
-					} else if (data.collection === 'video') {
-						pic.setAttribute('data-imageSrc', img[i].uri);
-					} else {
-						pic.setAttribute('data-imageSrc', img[i].src.replace("thumbnail_", "").replace(".png", ".jpg"));
-					}
 
+					if (/art_/.test(img[i].src)) {
+						pic.setAttribute('data-imagesrc', img[i].src.replace("thumbnail_", ""));
+					} else if (data.collection === 'video') {
+						pic.setAttribute('data-imagesrc', img[i].uri);
+					} else {
+						pic.setAttribute('data-imagesrc', img[i].src.replace("thumbnail_", "").replace(".png", ".jpg"));
+					}
+					pic.setAttribute('id', i);
 					pic.setAttribute('data-image-category', data.collection);
 					pic.setAttribute('src', img[i].src);
 					pic.setAttribute('width', width);
 					pic.setAttribute('height', height);
 					pic.setAttribute('rotation', rotation);
+					pic.setAttribute('side', 'front');
+					pic.setAttribute('class', classes);
 					if (data.collection === 'video') {
-						$(pic).on('click', function () {
+						pic.addEventListener('click', function (event) {
 							var sky = document.querySelector('a-sky');
-							this.emit('image-save', {shown: $(this).attr('src')});
-							//sky.emit('set-image-fade');
-							var actual = $(this).attr('data-imageSrc');
-							this.emit('video-show', {uri: actual});
-							console.log(actual);
 							sky.setAttribute('visible', 'false');
+							this.el.emit('video-show', {panel: event.target});
+							console.log(event);
 
-						});
+
+						}.bind(this));
 					} else {
 						$(pic).on('click', function () {
 							var sky = document.querySelector('a-sky');
 							this.emit('image-save', {shown: $(this).attr('src')});
 							sky.emit('set-image-fade');
-							var actual = $(this).attr('data-imageSrc');
+							var actual = $(this).attr('data-imagesrc');
 							console.log(actual);
 							setTimeout(function () {
 								sky.setAttribute('material', 'src', actual);
@@ -180,15 +182,11 @@ AFRAME.registerComponent('collection-panels', {
 
 					this.el.appendChild(pic);
 				}
+
+				// prepare and show 3d video
 				this.el.addEventListener('video-show', function (event) {
-					var vid = document.querySelector('a-videosphere');
-					if (!vid) {
-						vid = document.createElement('a-videosphere');
-					}
-					console.log(vid.components);
-					vid.setAttribute('src', event.detail.uri);
-					vid.setAttribute('loop', 'false');
-					this.el.sceneEl.appendChild(vid);
+					event.stopImmediatePropagation();
+					this.runVideo(event.detail.panel);
 				}.bind(this));
 
 				if (!data.initial) {
@@ -217,18 +215,18 @@ AFRAME.registerComponent('collection-panels', {
 
 	showSaveButton: function () {
 		//if (this.user) {
-			if (!document.querySelector('a-image#saveButton')) {
-				var saveBtn = document.createElement('a-image');
-				saveBtn.setAttribute('id', 'saveButton');
-				saveBtn.setAttribute('class', 'clickable');
-				saveBtn.setAttribute('height', 0.5);
-				saveBtn.setAttribute('width', 0.5);
-				saveBtn.setAttribute('position', {x: 2.4, y: -2, z: -3.8});
-				saveBtn.setAttribute('src', 'assets/ui/save_fav.png');
-				//saveBtn.setAttribute('scale', {x: 2.0, y: 0.8, z: 0.8});
-				saveBtn.addEventListener('click', this.savePic.bind(this));
-				this.el.appendChild(saveBtn);
-			}
+		if (!document.querySelector('a-image#saveButton')) {
+			var saveBtn = document.createElement('a-image');
+			saveBtn.setAttribute('id', 'saveButton');
+			saveBtn.setAttribute('class', 'clickable');
+			saveBtn.setAttribute('height', 0.5);
+			saveBtn.setAttribute('width', 0.5);
+			saveBtn.setAttribute('position', {x: 2.4, y: -2, z: -3.8});
+			saveBtn.setAttribute('src', 'assets/ui/save_fav.png');
+			//saveBtn.setAttribute('scale', {x: 2.0, y: 0.8, z: 0.8});
+			saveBtn.addEventListener('click', this.savePic.bind(this));
+			this.el.appendChild(saveBtn);
+		}
 		//}
 
 	},
@@ -251,6 +249,171 @@ AFRAME.registerComponent('collection-panels', {
 			.catch(err => {
 				console.log(err);
 			})
+	},
+
+	runVideo: function (videoDetails) {
+		var assets = document.querySelector('a-assets');
+		if(!assets){
+			assets = document.createElement('a-assets');
+			this.el.sceneEl.appendChild(assets);
+		}
+		var src = videoDetails.getAttribute('data-imagesrc');
+		var vidIdMatch = src.match(/(?:\/)([\w_\-]*)(?=\.\w*$)/);
+		console.log(vidIdMatch);
+		var vidId = vidIdMatch[1];
+		var video = document.querySelector('video#' + vidId);
+		if(!video){
+			video = document.createElement('video');
+			video.setAttribute('id', vidId);
+			video.setAttribute('src', src);
+			video.setAttribute('loop', 'false');
+			video.setAttribute('autoplay', '');
+			assets.appendChild(video);
+		}
+
+		var vid = document.querySelector('a-videosphere');
+		if (!vid) {
+			vid = document.createElement('a-videosphere');
+			vid.setAttribute('src', '#'+ vidId);
+			this.el.sceneEl.appendChild(vid);
+		} else {
+			var priorVid = vid.getAttribute('src');
+			var priorVideo = document.querySelector(priorVid);
+			console.log(priorVideo);
+			if(!priorVideo.paused){
+				priorVideo.pause();
+			}
+			var nextVideo = document.querySelector('#' + vidId);
+			if(nextVideo){
+				console.log(nextVideo);
+				if(nextVideo.paused){
+					nextVideo.play();
+				}
+			}
+
+			vid.setAttribute('src', '#'+ vidId);
+		}
+		this.hideMenus(null, 'assets/ui/ic_visibility_white_48dp_2x.png', vidId);
+
+
+	},
+
+	hideMenus: function (event, altImage, currentVid) {
+		var show = document.querySelector('a-entity#showAgain');
+		if(!show){
+			console.log('submit click');
+			var routerattr = document.querySelector('a-scene').getAttribute('router');
+			//console.log(routerattr);
+			//var nav = routerattr.navController;
+			var nav = document.querySelector('a-entity#nav-attach');
+			nav.setAttribute('visible', 'false');
+
+			var menu = document.querySelector('a-router');
+			//var menu = routerattr.routerEl;
+			menu.setAttribute('visible', 'false');
+
+			var cursor = document.querySelector('[raycaster]');
+			cursor.setAttribute('raycaster', 'objects', '.showIcons');
+			//console.log(cursor.components);
+
+			var showContainer = document.createElement('a-entity');
+			showContainer.setAttribute('id', 'showAgain');
+			showContainer.setAttribute('position', '0 -2.5 -3.08');
+
+			var showText = document.createElement('a-text');
+			showText.setAttribute('value', 'Show Menus and Icons');
+			showText.setAttribute('position', '-1 -1 0');
+			showText.setAttribute('text', 'height: 3;');
+
+
+			var showItems = document.createElement('a-image');
+			var showIcon = altImage || 'assets/ui/ic_visibility_black_48dp_2x.png';
+			showItems.setAttribute('src', showIcon);
+			showItems.setAttribute('class', 'showIcons');
+			showItems.setAttribute('position', '0 -0.5 0');
+			showItems.addEventListener('click', function (evt) {
+				//console.log(evt);
+				var show = document.querySelector('a-entity#showAgain');
+				//var show = evt.target.parentNode;
+				console.log('show again: ', show);
+				// hack to hide in video case where it is not getting cleared correctly.  then is removed via the navigation hack;
+				show.setAttribute('visible', 'false');
+				//this.clearScene(show.object3D);
+				show.parentNode.removeChild(show);
+
+				var cursor = document.querySelector('[raycaster]');
+				cursor.setAttribute('raycaster', 'objects', '.clickable');
+
+				//var nav = document.querySelector('a-entity#nav-attach');
+				var nav = routerattr.navController;
+				nav.setAttribute('visible', 'true');
+
+				//var menu = document.querySelector('a-router');
+				var menu = routerattr.routerEl;
+				menu.setAttribute('visible', 'true');
+
+			});
+
+			if(currentVid){
+				var playingVid = document.querySelector('video#' + currentVid);
+				playingVid.addEventListener('ended', function (evt) {
+					//console.log(evt);
+					var show = document.querySelector('a-entity#showAgain');
+					//var show = evt.target.parentNode;
+					console.log('show again: ', show);
+					// hack to hide in video case where it is not getting cleared correctly.  then is removed via the navigation hack;
+					show.setAttribute('visible', 'false');
+					//this.clearScene(show.object3D);
+					show.parentNode.removeChild(show);
+
+					var cursor = document.querySelector('[raycaster]');
+					cursor.setAttribute('raycaster', 'objects', '.clickable');
+
+					//var nav = document.querySelector('a-entity#nav-attach');
+					var nav = routerattr.navController;
+					nav.setAttribute('visible', 'true');
+
+					//var menu = document.querySelector('a-router');
+					var menu = routerattr.routerEl;
+					menu.setAttribute('visible', 'true');
+
+				});
+
+				var pauseText  = document.createElement('a-text');
+				pauseText.setAttribute('value', 'Pause');
+				pauseText.setAttribute('id', 'playOrPauseText');
+				pauseText.setAttribute('position', '-0.30 -2.75 0');
+				pauseText.setAttribute('rotation', '-45 0 0');
+				pauseText.setAttribute('text', 'height: 3;');
+
+				var pauseVid = document.createElement('a-image');
+				pauseVid.setAttribute('id', 'playOrPause');
+				pauseVid.setAttribute('src', 'assets/ui/ic_pause_circle_outline_white_48dp_1x.png');
+				pauseVid.setAttribute('class', 'showIcons');
+				pauseVid.setAttribute('position', '0 -2 0');
+				pauseVid.addEventListener('click', function (evt) {
+					//console.log(evt);
+					var playPauseBtn = document.querySelector('a-image#playOrPause');
+					var playPauseTxt = document.querySelector('a-text#playOrPauseText');
+					var toPause = document.querySelector('video#' + currentVid);
+					if(toPause.paused){
+						playPauseBtn.setAttribute('src', 'assets/ui/ic_pause_circle_outline_white_48dp_1x.png' );
+						playPauseTxt.setAttribute('value', 'Pause');
+						toPause.play();
+					} else {
+						playPauseBtn.setAttribute('src', 'assets/ui/ic_play_circle_outline_white_48dp_1x.png' );
+						playPauseTxt.setAttribute('value', 'Play');
+						playPauseTxt.setAttribute('position', '-0.25 -2.75 0');
+						toPause.pause();
+					}
+				});
+				showContainer.appendChild(pauseVid);
+				showContainer.appendChild(pauseText);
+			}
+			showContainer.appendChild(showText);
+			showContainer.appendChild(showItems);
+			this.el.sceneEl.appendChild(showContainer);
+		}
 	}
 
 

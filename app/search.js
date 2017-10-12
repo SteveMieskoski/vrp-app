@@ -264,7 +264,6 @@ AFRAME.registerComponent('search', {
 		var lat = queryLat || 32.472170; //41.5044381; //39.9495073;//41.5044381; //32.472170;
 		var lng = queryLng || 34.996909;//-81.6068944; //-75.1506225;//-81.6068944; //34.996909;
 		var loader = new GSVPANO.PanoLoader({zoom: zoom, radius: 5});
-		//var loader = GSVPANO.PanoLoader({zoom: zoom});
 
 		loader.onPanoramaLoad = (data) => {
 			try {
@@ -286,8 +285,6 @@ AFRAME.registerComponent('search', {
 		// Set error handle.
 		loader.onError = (message) => {
 			this.onGetPicError(message);
-			//this.errorMsg(message);
-			//alert(message); // todo plug in a different means of informing user that no results exist
 			return null;
 		}
 

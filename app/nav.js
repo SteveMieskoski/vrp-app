@@ -1,6 +1,7 @@
 /* global AFRAME */
 var axios = require("axios");
 var _ = require('lodash');
+
 /**
  * Component that listens to an event, fades out an entity, swaps the texture, and fades it
  * back in.
@@ -40,8 +41,11 @@ AFRAME.registerComponent('nav', {
 					// should tie this into the url to extract the present page
 					if (initialPage === details[i]["data-page"]) {
 						//this.includedPages(data.initialSelected);
+
 						newEl.addEventListener('loaded', function (event) {
-							var selected = event.detail.target.getAttribute('position');
+							var initialPageEl = document.querySelector('[data-page='+ initialPage + ']');
+							//var selected = event.detail.target.getAttribute('position');
+							var selected = initialPageEl.getAttribute('position');
 							var position = {
 								x: selected.x,
 								y: selected.y,
@@ -49,7 +53,7 @@ AFRAME.registerComponent('nav', {
 							};
 							var highlighter = document.querySelector('a-ring#selectedhighlighter');
 							highlighter.setAttribute('position', position);
-						});
+						}.bind(this));
 					}
 					newEl.addEventListener("click", (event) => {
 						this.selectorMove(event)
