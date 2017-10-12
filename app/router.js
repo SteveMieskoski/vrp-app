@@ -31,32 +31,16 @@ AFRAME.registerComponent('router', {
 		} else {
 			if (item.type === 'Audio') {
 				console.log('Audio: ', item);
-			/*	if(item) console.log('(if item) Audio: ', item);
-				if(item.disconnect) item.disconnect();*/
 			} else if (item.type === 'Mesh') {
 				console.log('Mesh Geometry: ', item.geometry);
 				console.log('Mesh Material: ', item.material);
 				console.log('Mesh Material Map: ', item.material.map);
 				item.geometry.dispose();
 				item.material.dispose();
-				if(item.material.map){
-					if(item.material.map.image){
-						if(/\.mp4$/.test(item.material.map.image.src)){
-							console.log('Mesh Material Map Video: ', item.material.map.image);
-							item.material.map.image.muted = true;
-							item.material.map.dispose();
-						} else {
-							item.material.map.dispose();
-						}
-						console.log('Mesh Material Map Image: ', item.material.map.image.src);
-					}
-
-				}
 				item.parent.remove(item);
 			} else {
 				console.log('Other Type: ', item);
 			}
-
 		}
 	},
 
