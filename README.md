@@ -1,9 +1,6 @@
-# TEAM NOTES 
+# VRP (Virtual Reality Passport)
 
-
-
-=========== The Actual README ============================
-# VRP 
+VRP presents interesting street art and other locations in an imersive virtual space.  Includes navigation between locations, and bookmarking/saving of specific locations when logged in.
 
 ### Installation
 
@@ -36,11 +33,3 @@ If you wish to serve the site from a different port:
 
 Distributed under an [MIT License](LICENSE).
 
-## Desktop
-
-Useful Chrome Extension:
-
-https://github.com/spite/WebVR-Extension
-
-Project Shout Outs:
-https://github.com/konforti/GSVPano
